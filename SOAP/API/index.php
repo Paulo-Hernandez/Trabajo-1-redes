@@ -1,0 +1,44 @@
+<?php
+
+
+function validarDigitoVerificador($rutSinDigito, $digitoVerificador) {
+    if(!is_numeric($rutSinDigito)){
+        echo "Rut malito uwu";
+        die();
+    }
+
+    $s = 1;
+    for($m = 0; $rutSinDigito != 0; $rutSinDigito /= 10){
+        $s = ($s + $rutSinDigito % 10 * (9 - $m++ % 6)) % 11;
+    }
+    $aux = chr($s ? $s + 47 : 75);
+
+    return $aux == $digitoVerificador;
+}
+
+function separarNombres($input){
+    $nombres = array();
+    $apellidos = array('a', 'b');
+
+    $aux = explode(" ", $input);
+
+    if(count($aux) < 3) {
+        echo "te faltan nombres uwu";
+        die();
+    }
+
+    $apellidos[1] = array_pop($aux);
+    $apellidos[0] = array_pop($aux);
+
+    $nombres = $aux;
+
+    return [
+        $nombres,
+        $apellidos
+    ];
+}
+
+echo validarDigitoVerificador(11111111, '1');
+echo "<br/>";
+var_dump(separarNombres("Jose Miguel Valdes Sereno"));
+
