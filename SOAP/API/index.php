@@ -39,8 +39,12 @@ $servicio->register(
 
 function validarDigitoVerificador($rutSinDigito, $digitoVerificador) {
     if(!is_numeric($rutSinDigito)){
-        echo "Rut malito uwu";
-        die();
+        return new soap_fault(
+            '3',
+            '',
+            'El RUT debe ser un numero entero',
+            ''
+        );
     }
 
     $s = 1;
@@ -59,8 +63,12 @@ function separarNombres($input){
     $aux = explode(" ", $input);
 
     if(count($aux) < 3) {
-        echo "te faltan nombres uwu";
-        die();
+        return new soap_fault(
+            '3',
+            '',
+            'Esta peticion necesita al menos 3 palabras separadas por espacios.',
+            ''
+        );
     }
 
     $apellidos[1] = array_pop($aux);
