@@ -1,4 +1,4 @@
-package com.redes.demo;
+package com.redes.controller;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
