@@ -5,14 +5,14 @@ import java.io.Serializable;
 public class ValidadorRutModel implements Serializable {
     private int rut;
     private char dv;
-    private final boolean esValido;
+    private final boolean valido;
 
     public ValidadorRutModel(int rut, char dv) {
         super();
         this.rut = rut;
         this.dv = dv;
 
-        this.esValido = this.validar();
+        this.valido = this.validar();
     }
 
     private boolean validar() {
@@ -26,7 +26,15 @@ public class ValidadorRutModel implements Serializable {
         return this.dv == (char) (s != 0 ? s + 47 : 75);
     }
 
-    public boolean esValido() {
-        return this.esValido;
+    public boolean isValido() {
+        return valido;
+    }
+
+    public int getRut() {
+        return rut;
+    }
+
+    public char getDv() {
+        return dv;
     }
 }
