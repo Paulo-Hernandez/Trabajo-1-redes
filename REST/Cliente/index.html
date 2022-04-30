@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente SOAP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<div class="flex flex-col items-center justify-center h-screen bg-indigo-800">
+
+    <div class="bg-white text-indigo-800 font-bold rounded-lg border shadow-lg p-10 mt-20">
+        <h1 class="text-5xl">Cliente SOAP</h1>
+    </div>
+    
+    <div class="flex flex-row w-full justify-center mt-8">
+        <a class="bg-white text-indigo-800 font-bold rounded-lg border shadow-lg p-5" href="separar.html">
+            Separador de Nombres y Apellidos
+        </a>
+
+        <a class="bg-white text-indigo-800 font-bold rounded-lg border shadow-lg p-5 ml-5" href="verificar.html">
+            Validador de RUT y dig. Verificador
+        </a>
+    </div>
+    
+    <div class="flex flex-row w-full justify-center mt-auto mb-8">
+        <div class="bg-white text-indigo-800 font-bold rounded-lg border shadow-lg p-5">
+            <h2 class="text-xl">Integrantes del proyecto</h3>
+                <ul class="list-disc px-6">
+                    <li>Cristobal Aravena</li>
+                    <li>José Aynaya</li>
+                    <li>Carlos Bandera</li>
+                    <li>Benjamin Castro</li>
+                    <li>Paulo Hernandez</li>
+                    <li>Rodrigo Soto</li>
+                </ul>
+        </div>
+
+        <div class="bg-white text-indigo-800 font-bold rounded-lg border shadow-lg p-5 ml-5">
+            <div class="flex flex-col justify-center h-full">
+                <h2 class="text-xl">Profesor</h2>
+                <p>Geraud Manouvrier Eléspuru</p>
+                
+                <h2 class="text-xl mt-4">Asignatura</h2>
+                <p>Redes y comunicación de datos</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<body>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/jquery.soap/jquery.soap.js"></script>
+    <script src="bower_components/jquery.xml2json/src/jquery.xml2json.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
