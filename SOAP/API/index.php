@@ -1,5 +1,41 @@
 <?php
 
+require_once "vendor/econea/nusoap/src/nusoap.php";
+$servicio = new soap_server();
+
+$ns = "urn:miserviciowsdl";
+$servicio->configureWSDL("ServicioWebSoap", $ns);
+$servicio->schemaTargetNamespace = $ns;
+
+$servicio->wsdl->addComplexType(
+    'Nombres',
+    'ComplexType',
+    'array',
+    '',
+    array(
+        'Nombre' => array(
+            'name' => 'Nombre',
+            'type' => 'xsd:string',
+            'minOccurs' => '0',
+            'maxOccurs' => 'unbounded'
+        )
+    )
+);
+
+$servicio->register(
+    "validarDigitoVerificador",
+    array('rutSinDigito' => 'xsd:string', 'digitoVerificador' => 'xsd:string'),
+    array('return' => 'xsd:boolean'), 
+    $ns
+);
+
+$servicio->register(
+    'separarNombres',
+    array('input' => 'xsd:string'),
+    array('nombres' => 'tns:Nombres', 'apellidos' => 'tns:Nombres'),
+    $ns
+);
+
 
 function validarDigitoVerificador($rutSinDigito, $digitoVerificador) {
     if(!is_numeric($rutSinDigito)){
@@ -38,7 +74,4 @@ function separarNombres($input){
     ];
 }
 
-echo validarDigitoVerificador(11111111, '1');
-echo "<br/>";
-var_dump(separarNombres("Jose Miguel Valdes Sereno"));
-
+$servicio->service(file_get_contents("php://input"));
