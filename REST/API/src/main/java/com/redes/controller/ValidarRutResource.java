@@ -23,9 +23,9 @@ public class ValidarRutResource {
             parsed_dv = dv.toUpperCase(Locale.ROOT).charAt(0);
         }
         catch (NumberFormatException e) {
-            return Response.status(400).entity("El rut debe ser un numero entero").build();
+            return Response.status(400).entity(new ErrorModel("El rut debe ser un numero entero")).build();
         }
-        catch(NullPointerException e) {
+        catch(NullPointerException | StringIndexOutOfBoundsException e) {
             return Response.status(400).entity(new ErrorModel("Debes enviar dos parametros en una petición GET. 'rut': numero entero. 'dv': caracter")).build();
         }
 
