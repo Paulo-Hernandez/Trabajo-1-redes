@@ -22,6 +22,12 @@ function show_error(message) {
     errordiv.classList.remove('hidden');
 }
 
+function onSOAPError(SOAPResponse) {
+    const errorMessage = SOAPResponse.toJSON().Body.Fault.faultstring.toString();
+
+    show_error(errorMessage);
+}
+
 function enviar_validar_rut() {
     if (API === "") return;
 
@@ -55,11 +61,7 @@ function enviar_validar_rut() {
                     `;
             }
         },
-        error: function (SOAPResponse) {
-            const errorMessage = SOAPResponse.toJSON().Body.Fault.faultstring.toString();
-
-            show_error(errorMessage);
-        },
+        error: onSOAPError,
     }
     )
 }
@@ -67,13 +69,13 @@ function enviar_validar_rut() {
 function enviar_separador_nombres() {
     if (API === "") return;
 
-    const nombres = document.querySelector('#nombres').value;
+    const nombresInput = document.querySelector('#nombres').value;
 
     $.soap({
         url: API,
         method: 'separarNombres',
 
-        data: { name: nombres },
+        data: { name: nombresInput },
 
         success: function (soapResponse) {
             const { nombres, apellidos } = soapResponse.toJSON().Body.separarNombresResponse;
@@ -97,10 +99,6 @@ function enviar_separador_nombres() {
             });
         },
 
-        error: function (SOAPResponse) {
-            const errorMessage = SOAPResponse.toJSON().Body.Fault.faultstring.toString();
-
-            show_error(errorMessage);
-        },
+        error: onSOAPError,
     })
 }
