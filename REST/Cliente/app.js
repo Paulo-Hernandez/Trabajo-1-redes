@@ -13,3 +13,15 @@ function enviar_validar_rut() {
     .then((response) => response.json())
     .then((data) => console.log(data));
 }
+
+function enviar_separador_nombres() {
+    const uri = API + '/separador';
+
+    const nombres = document.querySelector('#nombres').value;
+
+    fetch(uri + '?' + new URLSearchParams({
+        input: nombres,
+    }))
+    .then((response) => response.json())
+    .then((data) => console.log(data));
+}
