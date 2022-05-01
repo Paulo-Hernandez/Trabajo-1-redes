@@ -1,5 +1,5 @@
 {
     "HOST": "localhost",
-    "PORT": 8000,
-    "UBICACION": ""
+    "PORT": 8080,
+    "UBICACION": "/demo-1.0-SNAPSHOT"
 }

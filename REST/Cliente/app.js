@@ -7,7 +7,7 @@ let API = "";
         if(HOST == undefined || PORT == undefined || UBICACION == undefined){ 
             return show_error("Uno o más de los parámetros de ubicación de la API no han sido definidos. Revise 'config.json'.")
         }
-        API = `http://${HOST}:${PORT}${UBICACION}/index.php/`;
+        API = `http://${HOST}:${PORT}${UBICACION}/api`;
     }
     catch (Error) {
         return show_error("No se ha encontrado el archivo de configuracion 'config.json'")
@@ -22,6 +22,15 @@ function show_error(message) {
     errordiv.classList.remove('hidden');
 }
 
+async function verificar_error(response) {
+    if (!response.ok) {
+        throw Error(
+            await response.json().then((error) => error.message)
+        );
+    }
+    return response.json();
+}
+
 function enviar_validar_rut() {
     if(API === "") return;
     const uri = API + '/validar';
@@ -33,14 +42,7 @@ function enviar_validar_rut() {
         rut: rut_input,
         dv: dv_input,
     }))
-    .then(async (response) => {
-        if (!response.ok) {
-            throw Error(
-                await response.json().then((error) => error.message)
-            );
-        }
-        return response.json();
-    })
+    .then(verificar_error)
     .then((data) => {
         document.querySelector('#error').classList.add('hidden');
         const success = document.querySelector("#success");
@@ -69,14 +71,7 @@ function enviar_separador_nombres() {
     fetch(uri + '?' + new URLSearchParams({
         input: nombres,
     }))
-    .then(async (response) => {
-        if (!response.ok) {
-            throw Error(
-                await response.json().then((error) => error.message)
-            );
-        }
-        return response.json();
-    })
+    .then(verificar_error)
     .then((data) => {
         document.querySelector('#error').classList.add('hidden');
         const success = document.querySelector("#success");
@@ -88,11 +83,11 @@ function enviar_separador_nombres() {
             <li>Materno: ${data.apellidos.materno}</li>
         `
 
-        const nombres = success.querySelector('#nombres');
+        const nombresDiv = success.querySelector('#nombres');
 
-        nombres.innerHTML = '';
+        nombresDiv.innerHTML = '';
         data.nombres.forEach(nombre => {
-            nombres.innerHTML += `<li>${nombre}</li>`;
+            nombresDiv.innerHTML += `<li>${nombre}</li>`;
         });
     })
     .catch((error) => show_error(error));
