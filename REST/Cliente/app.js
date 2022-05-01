@@ -10,8 +10,38 @@ function enviar_validar_rut() {
         rut: rut_input,
         dv: dv_input,
     }))
-    .then((response) => response.json())
-    .then((data) => console.log(data));
+    .then(async (response) => {
+        if (!response.ok) {
+            throw Error(
+                await response.json().then((error) => error.message)
+            );
+        }
+        return response.json();
+    })
+    .then((data) => {
+        document.querySelector('#error').classList.add('hidden');
+        const success = document.querySelector("#success");
+        
+        success.classList.remove('hidden');
+
+        if(!data.valido){
+            success.querySelector('p').innerText = `
+                El Digito verificador ${data.dv} no es valido para el rut ${data.rut}
+            `;
+        }
+        else {
+            success.querySelector('p').innerText = `
+                El Digito verificador ${data.dv} si es válido para tu RUT, Hurra!
+            `;
+        }
+    })
+    .catch((error) => {
+        document.querySelector('#success').classList.add('hidden');
+        const errordiv = document.querySelector('#error');
+
+        errordiv.querySelector('p').innerText = error;
+        errordiv.classList.remove('hidden');
+    })
 }
 
 function enviar_separador_nombres() {
@@ -22,6 +52,19 @@ function enviar_separador_nombres() {
     fetch(uri + '?' + new URLSearchParams({
         input: nombres,
     }))
-    .then((response) => response.json())
-    .then((data) => console.log(data));
+    .then(async (response) => {
+        if (!response.ok) {
+            throw Error(
+                await response.json().then((error) => error.message)
+            );
+        }
+        return response.json();
+    })
+    .then((data) => console.log(data))
+    .catch((error) => {
+        document.querySelector('#success').classList.add('hidden');
+        const errordiv = document.querySelector('#error');
+
+        errordiv.querySelector('p').innerText = error;
+        errordiv.classList.remove('hidden');    });
 }

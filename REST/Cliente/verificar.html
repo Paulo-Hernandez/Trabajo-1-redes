@@ -30,13 +30,27 @@
             </div>
 
             <div class="mt-10">
-                <button
-                    onclick="enviar_validar_rut()"
+                <button onclick="enviar_validar_rut()"
                     class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-500 focus:outline-none focus:bg-purple-600">
                     Verificar
                 </button>
             </div>
         </div>
+
+        <div id="success"
+            class="hidden w-full mx-auto mb-auto p-6 bg-indigo-50 border-t-4 border-indigo-400 rounded-md shadow-md border-top lg:max-w-md">
+            <h1 class="text-3xl font-semibold text-center text-indigo-800">Resultado: </h1>
+            <p class="text-xl text-indigo-800">
+            </p>
+        </div>
+
+
+        <div id="error"
+            class="hidden w-full mx-auto mb-auto p-6 bg-pink-100 border-t-4 border-indigo-400 rounded-md shadow-md border-top lg:max-w-md">
+            <h1 class="text-3xl font-semibold text-center text-indigo-800">Ha ocurrido un error!</h1>
+            <p class="text-xl text-indigo-800 text-center">* Descripción del error. *</p>
+        </div>
+
         <div class="flex flex-row justify-center mb-8">
             <a href="index.html"
                 class="w-full p-6 bg-white border-t-4 border-indigo-400 rounded-md shadow-md border-top lg:max-w-md">
