@@ -11,18 +11,30 @@ $ns = "urn:miserviciowsdl";
 $servicio->configureWSDL("ServicioWebSoap", $ns);
 $servicio->schemaTargetNamespace = $ns;
 
+// $servicio->wsdl->addComplexType(
+//     'Nombres',
+//     'ComplexType',
+//     'array',
+//     '',
+//     array(
+//         'Nombre' => array(
+//             'name' => 'Nombre',
+//             'type' => 'xsd:string',
+//             'minOccurs' => '0',
+//             'maxOccurs' => 'unbounded'
+//         )
+//     )
+// );
+
 $servicio->wsdl->addComplexType(
-    'Nombres',
-    'ComplexType',
-    'array',
+    'Apellidos',
+    'complexType',
+    'struct',
+    'sequence',
     '',
     array(
-        'Nombre' => array(
-            'name' => 'Nombre',
-            'type' => 'xsd:string',
-            'minOccurs' => '0',
-            'maxOccurs' => 'unbounded'
-        )
+        'paterno' => array('name' => 'paterno', 'type' => 'xsd:string'),
+        'materno' => array('name' => 'materno', 'type' => 'xsd:string')
     )
 );
 
@@ -36,7 +48,7 @@ $servicio->register(
 $servicio->register(
     'separarNombres',
     array('input' => 'xsd:string'),
-    array('nombres' => 'tns:Nombres', 'apellidos' => 'tns:Nombres'),
+    array('nombres' => 'SOAP-ENC:Array', 'apellidos' => 'tns:Apellidos'),
     $ns
 );
 
@@ -62,7 +74,7 @@ function validarDigitoVerificador($rutSinDigito, $digitoVerificador) {
 
 function separarNombres($input){
     $nombres = array();
-    $apellidos = array('a', 'b');
+    $apellidos = array();
 
     $aux = explode(" ", $input);
 
@@ -75,15 +87,12 @@ function separarNombres($input){
         );
     }
 
-    $apellidos[1] = array_pop($aux);
-    $apellidos[0] = array_pop($aux);
+    $apellidos['materno'] = array_pop($aux);
+    $apellidos['paterno'] = array_pop($aux);
 
     $nombres = $aux;
 
-    return [
-        $nombres,
-        $apellidos
-    ];
+    return compact('nombres', 'apellidos');
 }
 
 $servicio->service(file_get_contents("php://input"));
