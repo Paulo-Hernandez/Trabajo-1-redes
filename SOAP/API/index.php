@@ -11,6 +11,8 @@ $ns = "urn:miserviciowsdl";
 $servicio->configureWSDL("ServicioWebSoap", $ns);
 $servicio->schemaTargetNamespace = $ns;
 
+define("XMLSTRING", "xsd:string");
+
 $servicio->wsdl->addComplexType(
     'Apellidos',
     'complexType',
@@ -18,21 +20,21 @@ $servicio->wsdl->addComplexType(
     'sequence',
     '',
     array(
-        'paterno' => array('name' => 'paterno', 'type' => 'xsd:string'),
-        'materno' => array('name' => 'materno', 'type' => 'xsd:string')
+        'paterno' => array('name' => 'paterno', 'type' => XMLSTRING),
+        'materno' => array('name' => 'materno', 'type' => XMLSTRING)
     )
 );
 
 $servicio->register(
     "validarDigitoVerificador",
-    array('rutSinDigito' => 'xsd:string', 'digitoVerificador' => 'xsd:string'),
-    array('rut' => 'xsd:string', 'dv' => 'xsd:string', 'valido' => 'xsd:boolean'), 
+    array('rutSinDigito' => XMLSTRING, 'digitoVerificador' => XMLSTRING),
+    array('rut' => XMLSTRING, 'dv' => XMLSTRING, 'valido' => 'xsd:boolean'), 
     $ns
 );
 
 $servicio->register(
     'separarNombres',
-    array('input' => 'xsd:string'),
+    array('input' => XMLSTRING),
     array('nombres' => 'SOAP-ENC:Array', 'apellidos' => 'tns:Apellidos'),
     $ns
 );
@@ -60,8 +62,10 @@ function validarDigitoVerificador($rutSinDigito, $digitoVerificador) {
     }
 
     $s = 1;
-    for($m = 0; $rutSinDigito != 0; $rutSinDigito /= 10){
-        $s = ($s + $rutSinDigito % 10 * (9 - $m++ % 6)) % 11;
+    $m = 0;
+    for(; $rutSinDigito != 0; $rutSinDigito /= 10){
+        $s = ($s + $rutSinDigito % 10 * (9 - $m % 6)) % 11;
+        $m += 1;
     }
     $aux = chr($s ? $s + 47 : 75);
 
