@@ -11,21 +11,6 @@ $ns = "urn:miserviciowsdl";
 $servicio->configureWSDL("ServicioWebSoap", $ns);
 $servicio->schemaTargetNamespace = $ns;
 
-// $servicio->wsdl->addComplexType(
-//     'Nombres',
-//     'ComplexType',
-//     'array',
-//     '',
-//     array(
-//         'Nombre' => array(
-//             'name' => 'Nombre',
-//             'type' => 'xsd:string',
-//             'minOccurs' => '0',
-//             'maxOccurs' => 'unbounded'
-//         )
-//     )
-// );
-
 $servicio->wsdl->addComplexType(
     'Apellidos',
     'complexType',
@@ -41,7 +26,7 @@ $servicio->wsdl->addComplexType(
 $servicio->register(
     "validarDigitoVerificador",
     array('rutSinDigito' => 'xsd:string', 'digitoVerificador' => 'xsd:string'),
-    array('return' => 'xsd:boolean'), 
+    array('rut' => 'xsd:string', 'dv' => 'xsd:string', 'valido' => 'xsd:boolean'), 
     $ns
 );
 
@@ -54,11 +39,22 @@ $servicio->register(
 
 
 function validarDigitoVerificador($rutSinDigito, $digitoVerificador) {
+    $rutcopia = $rutSinDigito;
+    
     if(!is_numeric($rutSinDigito)){
         return new soap_fault(
             '3',
             '',
             'El RUT debe ser un numero entero',
+            ''
+        );
+    }
+
+    if(strlen($digitoVerificador) != 1) {
+        return new soap_fault(
+            '3',
+            '',
+            'El Digito verificador debe ser un unico caracter',
             ''
         );
     }
@@ -69,7 +65,11 @@ function validarDigitoVerificador($rutSinDigito, $digitoVerificador) {
     }
     $aux = chr($s ? $s + 47 : 75);
 
-    return $aux == $digitoVerificador;
+    return [
+        'rut' => $rutcopia,
+        'dv' => $digitoVerificador,
+        'valido' => $aux == $digitoVerificador
+    ];
 }
 
 function separarNombres($input){

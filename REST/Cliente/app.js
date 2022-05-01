@@ -83,5 +83,6 @@ function enviar_separador_nombres() {
         const errordiv = document.querySelector('#error');
 
         errordiv.querySelector('p').innerText = error;
-        errordiv.classList.remove('hidden');    });
+        errordiv.classList.remove('hidden');    
+    });
 }
