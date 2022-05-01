@@ -60,7 +60,24 @@ function enviar_separador_nombres() {
         }
         return response.json();
     })
-    .then((data) => console.log(data))
+    .then((data) => {
+        document.querySelector('#error').classList.add('hidden');
+        const success = document.querySelector("#success");
+        
+        success.classList.remove('hidden');
+
+        success.querySelector('#apellidos').innerHTML = `
+            <li>Paterno: ${data.apellidos.paterno}</li>
+            <li>Materno: ${data.apellidos.materno}</li>
+        `
+
+        const nombres = success.querySelector('#nombres');
+
+        nombres.innerHTML = '';
+        data.nombres.forEach(nombre => {
+            nombres.innerHTML += `<li>${nombre}</li>`;
+        });
+    })
     .catch((error) => {
         document.querySelector('#success').classList.add('hidden');
         const errordiv = document.querySelector('#error');
