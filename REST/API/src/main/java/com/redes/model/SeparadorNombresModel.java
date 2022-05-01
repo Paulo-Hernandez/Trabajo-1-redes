@@ -5,7 +5,8 @@ import java.util.List;
 
 public class SeparadorNombresModel implements Serializable {
     private class Apellidos implements Serializable {
-        private String paterno, materno;
+        private String paterno;
+        private String materno;
 
         public Apellidos(String paterno, String materno) {
             super();

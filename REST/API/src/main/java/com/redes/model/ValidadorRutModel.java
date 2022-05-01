@@ -17,7 +17,8 @@ public class ValidadorRutModel implements Serializable {
 
     private boolean validar() {
         int aux = this.rut;
-        int m = 0, s = 1;
+        int m = 0;
+        int s = 1;
 
         for(; aux != 0; aux /= 10){
             s = (s + aux % 10 * (9 - m++ % 6)) % 11;
