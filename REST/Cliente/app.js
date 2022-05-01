@@ -1,6 +1,29 @@
-const API = 'http://localhost:8080/demo-1.0-SNAPSHOT/api';
+let API = "";
+
+(async () => {
+    try {
+        const { HOST, PORT, UBICACION } = await fetch('config.json')
+            .then((response) => response.json());
+        if(HOST == undefined || PORT == undefined || UBICACION == undefined){ 
+            return show_error("Uno o más de los parámetros de ubicación de la API no han sido definidos. Revise 'config.json'.")
+        }
+        API = `http://${HOST}:${PORT}${UBICACION}/index.php/`;
+    }
+    catch (Error) {
+        return show_error("No se ha encontrado el archivo de configuracion 'config.json'")
+    }
+})();
+
+function show_error(message) {
+    document.querySelector('#success').classList.add('hidden');
+    const errordiv = document.querySelector('#error');
+
+    errordiv.querySelector('p').innerText = message;
+    errordiv.classList.remove('hidden');
+}
 
 function enviar_validar_rut() {
+    if(API === "") return;
     const uri = API + '/validar';
 
     const rut_input = document.querySelector('#rut').value;
@@ -35,13 +58,7 @@ function enviar_validar_rut() {
             `;
         }
     })
-    .catch((error) => {
-        document.querySelector('#success').classList.add('hidden');
-        const errordiv = document.querySelector('#error');
-
-        errordiv.querySelector('p').innerText = error;
-        errordiv.classList.remove('hidden');
-    })
+    .catch((error) => show_error(error));
 }
 
 function enviar_separador_nombres() {
@@ -78,11 +95,5 @@ function enviar_separador_nombres() {
             nombres.innerHTML += `<li>${nombre}</li>`;
         });
     })
-    .catch((error) => {
-        document.querySelector('#success').classList.add('hidden');
-        const errordiv = document.querySelector('#error');
-
-        errordiv.querySelector('p').innerText = error;
-        errordiv.classList.remove('hidden');    
-    });
+    .catch((error) => show_error(error));
 }
