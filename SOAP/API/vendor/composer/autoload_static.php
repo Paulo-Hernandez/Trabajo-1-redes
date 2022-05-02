@@ -6,6 +6,28 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit302b7d8fbe9918b3cc9513861647738f
 {
+    public static $prefixLengthsPsr4 = array (
+        'P' => 
+        array (
+            'Psr\\Log\\' => 8,
+        ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'XMLSchema' => __DIR__ . '/..' . '/econea/nusoap/src/nusoap.php',
@@ -29,6 +51,8 @@ class ComposerStaticInit302b7d8fbe9918b3cc9513861647738f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInit302b7d8fbe9918b3cc9513861647738f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit302b7d8fbe9918b3cc9513861647738f::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInit302b7d8fbe9918b3cc9513861647738f::$classMap;
 
         }, null, ClassLoader::class);

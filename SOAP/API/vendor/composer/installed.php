@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '20dd0e195f715ec3f86e9a7121c6fdc74427023f',
+        'reference' => 'fc1bbe260f4a880d43073760ae1b0bb49b9d85d0',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '20dd0e195f715ec3f86e9a7121c6fdc74427023f',
+            'reference' => 'fc1bbe260f4a880d43073760ae1b0bb49b9d85d0',
             'dev_requirement' => false,
         ),
         'econea/nusoap' => array(
@@ -27,6 +27,30 @@
             'aliases' => array(),
             'reference' => 'e83219ee1add324124fea8e448b4cfddf782f8ff',
             'dev_requirement' => false,
+        ),
+        'monolog/monolog' => array(
+            'pretty_version' => '2.5.0',
+            'version' => '2.5.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../monolog/monolog',
+            'aliases' => array(),
+            'reference' => '4192345e260f1d51b365536199744b987e160edc',
+            'dev_requirement' => false,
+        ),
+        'psr/log' => array(
+            'pretty_version' => '1.1.4',
+            'version' => '1.1.4.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/log',
+            'aliases' => array(),
+            'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
+            'dev_requirement' => false,
+        ),
+        'psr/log-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.0.0 || 2.0.0 || 3.0.0',
+            ),
         ),
     ),
 );

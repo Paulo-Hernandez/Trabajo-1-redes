@@ -4,6 +4,10 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, SOAPAction');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 
+require __DIR__ . '/vendor/autoload.php';
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
 require_once "vendor/econea/nusoap/src/nusoap.php";
 $servicio = new soap_server();
 
@@ -41,9 +45,16 @@ $servicio->register(
 
 
 function validarDigitoVerificador($rutSinDigito, $digitoVerificador) {
+    $log = new Logger("SOAP");
+    $log->pushHandler(new StreamHandler(__DIR__ . "/logs/actions.log", Logger::WARNING));
+
+    $log->info("[ACTION]: 'validarDigitoVerificador'; [rut]: $rutSinDigito; [dv]: $digitoVerificador");
     $rutcopia = $rutSinDigito;
     
     if(!is_numeric($rutSinDigito)){
+        $log->warning("[ACTION]: 'validarDigitoVerificador' - Bad input");
+        $log->warning("Se intentó utilizar un RUT inválido. [rut]: $rutSinDigito");
+
         return new soap_fault(
             '3',
             '',
@@ -53,6 +64,9 @@ function validarDigitoVerificador($rutSinDigito, $digitoVerificador) {
     }
 
     if(strlen($digitoVerificador) != 1) {
+        $log->warning("[ACTION]: 'validarDigitoVerificador' - Bad input");
+        $log->warning("Se intentó utilizar un DV inválido. [dv]: $digitoVerificador");
+
         return new soap_fault(
             '3',
             '',
@@ -77,12 +91,19 @@ function validarDigitoVerificador($rutSinDigito, $digitoVerificador) {
 }
 
 function separarNombres($input){
+    $log = new Logger("SOAP");
+    $log->pushHandler(new StreamHandler(__DIR__ . "/logs/actions.log", Logger::WARNING));
+
+    $log->info("[Action]: 'separarNombres'; [input]: $input");
     $nombres = array();
     $apellidos = array();
 
     $aux = explode(" ", $input);
 
     if(count($aux) < 3) {
+        $log->warning("[ACTION]: 'separarNombres' - Bad input");
+        $log->warning("Se intentó utilizar un input inválido. [input]: $input");
+
         return new soap_fault(
             '3',
             '',

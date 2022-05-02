@@ -1,5 +1,6 @@
 {
     "require": {
-        "econea/nusoap": "^0.9.12"
+        "econea/nusoap": "^0.9.12",
+        "monolog/monolog": "^2.5"
     }
 }
