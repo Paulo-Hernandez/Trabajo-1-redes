@@ -5,10 +5,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-
-import java.io.IOException;
 import java.util.Locale;
-
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.redes.AppLogger;
@@ -17,16 +15,10 @@ import com.redes.model.ValidadorRutModel;
 
 @Path("/validar")
 public class ValidarRutResource {
-    private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     public ValidarRutResource() {
-        try {
-            AppLogger.setup();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Problems with creating log files");
-        }
+        AppLogger.setup();
     }
 
     @GET
@@ -38,16 +30,21 @@ public class ValidarRutResource {
         try {
             parsedRUT = Integer.parseInt(rut);
             parsedDV = dv.toUpperCase(Locale.ROOT).charAt(0);
-        }
-        catch (NumberFormatException e) {
-            LOGGER.warning("[GET] '/valida': Request con un RUT Invalido: " + rut);
+        } catch (NumberFormatException e) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.warning(String.format("[GET] '/valida': Request con un RUT Invalido: %s", rut));
+            }
 
             return Response.status(400).entity(new ErrorModel("El rut debe ser un numero entero")).build();
-        }
-        catch(NullPointerException | StringIndexOutOfBoundsException e) {
-            LOGGER.warning("[GET] '/validar': Request con un dv invalido: " + dv);
+        } catch (NullPointerException | StringIndexOutOfBoundsException e) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.warning(String.format("[GET] '/validar': Request con un dv invalido: %s", dv));
+            }
 
-            return Response.status(400).entity(new ErrorModel("Debes enviar dos parametros en una petición GET. 'rut': numero entero. 'dv': caracter")).build();
+            return Response.status(400)
+                    .entity(new ErrorModel(
+                            "Debes enviar dos parametros en una petición GET. 'rut': numero entero. 'dv': caracter"))
+                    .build();
         }
 
         ValidadorRutModel res = new ValidadorRutModel(parsedRUT, parsedDV);

@@ -1,14 +1,17 @@
 package com.redes;
 
-import java.io.IOException;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AppLogger {
-    static private ConsoleHandler consola;
+    private AppLogger() {
+        throw new IllegalStateException("Utility class");
+    }
 
-    static public void setup() throws IOException {
+    
+    public static void setup() {
+        ConsoleHandler consola;
         Logger logger = Logger.getLogger(AppLogger.class.getName());
         logger.setLevel(Level.WARNING);
         consola = new ConsoleHandler();
